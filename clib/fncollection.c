@@ -9,20 +9,6 @@
 #include "../version.h"
 #include "clock.h"
 
-uint8_t led_mode = 2;   // Start blinking
-
-// LED
-void
-ledfunc(char *in)
-{
-  fromhex(in+1, &led_mode, 1);
-  if(led_mode & 1)
-    LED_ON();
-  else
-    LED_OFF();
-}
-
-
 void
 version(char *in)
 {

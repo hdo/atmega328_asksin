@@ -3,9 +3,7 @@
    Inpired by the MyUSB USBtoSerial demo, Copyright (C) Dean Camera, 2008.
 */
 
-#include <avr/boot.h>
 #include <avr/power.h>
-#include <avr/eeprom.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -42,7 +40,6 @@ volatile extern uint32_t ticks;  // 1/125 sec resolution // see clock.h
 const PROGMEM t_fntab fntab[] = {
 
   { 'C', ccreg },
-  { 'F', fs20send },
 #ifdef HAS_ASKSIN
   { 'A', asksin_func },
 #endif
@@ -52,7 +49,6 @@ const PROGMEM t_fntab fntab[] = {
   { 'V', version },
   { 'X', set_txreport },
 
-  { 'l', ledfunc },
   { 't', gettime },
 
   { 0, 0 },
@@ -112,6 +108,8 @@ main(void)
 
   sei();
 
+  /* start moritz function */
+  moritz_func("Zr\n");
   for(;;) {
 	led_process(ticks);
 

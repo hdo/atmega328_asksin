@@ -12,6 +12,8 @@
 #include "rf_moritz.h"
 #endif
 
+#define CC1100_CFG_SIZE   0x29                               // 41
+
 uint8_t cc_on;
 
 // NOTE: FS20 devices can receive/decode signals sent with PA ramping,
@@ -33,7 +35,7 @@ const PROGMEM const uint8_t CC1100_PA[] = {
 };
 
 
-const PROGMEM const uint8_t CC1100_CFG[EE_CC1100_CFG_SIZE] = {
+const PROGMEM const uint8_t CC1100_CFG[CC1100_CFG_SIZE] = {
 // CULFW   IDX NAME     RESET STUDIO COMMENT
    0x0D, // 00 IOCFG2   *29   *0B    GDO2 as serial output
    0x2E, // 01 IOCFG1    2E    2E    Tri-State

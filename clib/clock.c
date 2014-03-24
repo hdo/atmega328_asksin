@@ -47,12 +47,6 @@ Minute_Task(void)
   if(clock_hsec>0)     // Note: this can skip some hsecs
     return;
 
-#ifndef XLED
-  // 1Hz
-  if(led_mode & 2)
-    LED_TOGGLE();
-#endif
-
   // one second, 1% duty cycle, 10ms resolution => this is simple ;-)
   if (credit_10ms < MAX_CREDIT)
     credit_10ms += 1;
