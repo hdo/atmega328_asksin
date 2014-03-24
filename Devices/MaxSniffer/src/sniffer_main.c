@@ -26,14 +26,8 @@
 #include "rf_receive.h"
 #include "rf_send.h"
 #include "ttydata.h"
-
-#ifdef HAS_ASKSIN
 #include "rf_asksin.h"
-#endif
-
-#ifdef HAS_MORITZ
 #include "rf_moritz.h"
-#endif
 
 
 
@@ -42,12 +36,8 @@ volatile extern uint32_t ticks;  // 1/125 sec resolution // see clock.h
 const PROGMEM t_fntab fntab[] = {
 
   { 'C', ccreg },
-#ifdef HAS_ASKSIN
   { 'A', asksin_func },
-#endif
-#ifdef HAS_MORITZ
   { 'Z', moritz_func },
-#endif
   { 'V', version },
   { 'X', set_txreport },
 
@@ -118,12 +108,8 @@ main(void)
     uart_task();
     RfAnalyze_Task();
     Minute_Task();
-#ifdef HAS_ASKSIN
     rf_asksin_task();
-#endif
-#ifdef HAS_MORITZ
     rf_moritz_task();
-#endif
   }
 
 }

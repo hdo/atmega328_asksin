@@ -1,5 +1,4 @@
 #include "board.h"
-#ifdef HAS_MORITZ
 #include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
@@ -394,4 +393,3 @@ moritz_func(char *in)
   }
 }
 
-#endif

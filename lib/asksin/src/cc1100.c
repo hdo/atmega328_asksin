@@ -7,10 +7,7 @@
 #include "display.h"
 #include "fncollection.h"
 #include "cc1100.h"
-
-#ifdef HAS_MORITZ
 #include "rf_moritz.h"
-#endif
 
 #define CC1100_CFG_SIZE   0x29                               // 41
 
@@ -100,9 +97,7 @@ cc1100_sendbyte(uint8_t data)
 void
 ccInitChip()
 {
-#ifdef HAS_MORITZ
   moritz_on = 0; //loading this configuration overwrites moritz cfg
-#endif
 
   EIMSK &= ~_BV(CC1100_INT);                 
   SET_BIT( CC1100_CS_DDR, CC1100_CS_PIN ); // CS as output

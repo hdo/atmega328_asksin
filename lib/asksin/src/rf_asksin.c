@@ -1,5 +1,4 @@
 #include "board.h"
-#ifdef HAS_ASKSIN
 #include <string.h>
 #include <avr/pgmspace.h>
 #include "cc1100.h"
@@ -257,4 +256,3 @@ asksin_func(char *in)
   }
 }
 
-#endif

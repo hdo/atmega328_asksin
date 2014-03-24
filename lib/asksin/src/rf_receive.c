@@ -18,10 +18,7 @@
 #include "display.h"
 #include "clock.h"
 #include "fncollection.h"
-
-#ifdef HAS_ASKSIN
 #include "rf_asksin.h"
-#endif
 
 //////////////////////////
 // With a CUL measured RF timings, in us, high/low sum

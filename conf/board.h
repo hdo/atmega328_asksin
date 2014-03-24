@@ -1,16 +1,9 @@
 #ifndef _BOARD_H
 #define _BOARD_H
 
-
-
 #define ARDUINO_MINI_PRO
 
-
-#define FHTBUF_SIZE          174      //                 RAM: 174b
 #define RCV_BUCKETS            4      //                 RAM: 25b * bucket
-#define HAS_ASKSIN
-#define HAS_MORITZ
-
 
 #define SPI_PORT		PORTB
 #define SPI_DDR			DDRB
@@ -46,14 +39,11 @@
 #define LED_PIN_BLUE            2
 #endif
 
-#define BOARD_ID_STR            "CSM868"
-#define BOARD_ID_STR433         "CSM433"
+#define BOARD_ID_STR            "ARDUINO_MINI_PRO"
 
 #define HAS_UART                1
 #define UART_BAUD_RATE          38400
 
 #define TTY_BUFSIZE             128
-
-#define BUSWARE_CSM
 
 #endif
