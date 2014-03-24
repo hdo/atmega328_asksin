@@ -1,5 +1,4 @@
 #include <avr/io.h>
-#include <avr/wdt.h>
 #include <avr/interrupt.h>
 
 #include "board.h"
@@ -43,7 +42,6 @@ Minute_Task(void)
   if((uint8_t)ticks == last_tick)
     return;
   last_tick = (uint8_t)ticks;
-  wdt_reset();
 
 
   if(clock_hsec>0)     // Note: this can skip some hsecs

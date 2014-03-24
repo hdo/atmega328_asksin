@@ -9,7 +9,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <avr/wdt.h>
 
 #include <string.h>
 
@@ -62,7 +61,6 @@ const PROGMEM t_fntab fntab[] = {
 int
 main(void)
 {
-  wdt_disable();
 
   led_init();
 
@@ -89,7 +87,6 @@ main(void)
   clock_prescale_set(clock_div_1);
 
   MCUSR &= ~(1 << WDRF);                   // Enable the watchdog
-  wdt_enable(WDTO_2S);
 
   uart_init( UART_BAUD_SELECT_DOUBLE_SPEED(UART_BAUD_RATE,F_CPU) );
 
