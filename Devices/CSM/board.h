@@ -2,14 +2,12 @@
 #define _BOARD_H
 
 
-#undef  FULL_CC1100_PA                  // PROGMEM:  108b
 
 #define ARDUINO_MINI_PRO
 
 
 #define FHTBUF_SIZE          174      //                 RAM: 174b
 #define RCV_BUCKETS            4      //                 RAM: 25b * bucket
-#define FULL_CC1100_PA                // PROGMEM:  108b
 #define HAS_ASKSIN
 #define HAS_MORITZ
 

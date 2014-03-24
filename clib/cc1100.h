@@ -10,14 +10,12 @@
 #include <avr/io.h>
 #include "led.h"
 
-void ccInitChip(uint8_t *cfg);
-void cc_factory_reset(void);
+void ccInitChip(void);
 void ccDump(void);
 void ccTX(void);
 void ccRX(void);
 uint8_t ccStrobe(uint8_t);
 void ccreg(char*);
-void ccsetpa(char*);
 uint8_t cc1100_sendbyte(uint8_t data);
 void cc1100_writeReg(uint8_t addr, uint8_t data);
 uint8_t cc1100_readReg(uint8_t addr);

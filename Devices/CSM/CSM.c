@@ -42,7 +42,6 @@ volatile extern uint32_t ticks;  // 1/125 sec resolution // see clock.h
 
 const PROGMEM t_fntab fntab[] = {
 
-  { 'B', prepare_boot },
   { 'C', ccreg },
   { 'F', fs20send },
 #ifdef HAS_ASKSIN
@@ -51,15 +50,11 @@ const PROGMEM t_fntab fntab[] = {
 #ifdef HAS_MORITZ
   { 'Z', moritz_func },
 #endif
-  { 'R', read_eeprom },
   { 'V', version },
-  { 'W', write_eeprom },
   { 'X', set_txreport },
 
-  { 'e', eeprom_factory_reset },
   { 'l', ledfunc },
   { 't', gettime },
-  { 'x', ccsetpa },
 
   { 0, 0 },
 };
@@ -82,17 +77,6 @@ main(void)
 
   spi_init();
 
-//  eeprom_factory_reset("xx");
-  eeprom_init();
-
-//  led_mode = 2;
-
-  // if we had been restarted by watchdog check the REQ BootLoader byte in the
-  // EEPROM ...
-//  if(bit_is_set(MCUSR,WDRF) && eeprom_read_byte(EE_REQBL)) {
-//    eeprom_write_byte( EE_REQBL, 0 ); // clear flag
-//    start_bootloader();
-//  }
 
   OCR0A  = 249;                            // Timer0: 0.008s = 8MHz/256/250 == 125Hz
   TCCR0B = _BV(CS02);

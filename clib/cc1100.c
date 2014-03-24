@@ -16,7 +16,6 @@ uint8_t cc_on;
 
 // NOTE: FS20 devices can receive/decode signals sent with PA ramping,
 // but the CC1101 cannot
-#ifdef FULL_CC1100_PA
 const PROGMEM const uint8_t CC1100_PA[] = {
 
   0x00,0x03,0x0F,0x1E,0x26,0x27,0x00,0x00,      //-10 dBm with PA ramping
@@ -32,16 +31,6 @@ const PROGMEM const uint8_t CC1100_PA[] = {
   0x00,0xC2,0x00,0x00,0x00,0x00,0x00,0x00,      // 10 dBm
 
 };
-#else
-const PROGMEM const uint8_t CC1100_PA[] = {
-
-  0x27,   //-10 dBm
-  0x67,   // -5 dBm (yes it is 67, checked 3 times!)
-  0x50,   //  0 dBm
-  0x81,   //  5 dBm
-  0xC2,   // 10 dBm
-};
-#endif
 
 
 const PROGMEM const uint8_t CC1100_CFG[EE_CC1100_CFG_SIZE] = {
@@ -107,7 +96,7 @@ cc1100_sendbyte(uint8_t data)
 
 
 void
-ccInitChip(uint8_t *cfg)
+ccInitChip()
 {
 #ifdef HAS_MORITZ
   moritz_on = 0; //loading this configuration overwrites moritz cfg
@@ -128,71 +117,30 @@ ccInitChip(uint8_t *cfg)
 
   CC1100_ASSERT;                             // load configuration
   cc1100_sendbyte( 0 | CC1100_WRITE_BURST );
-  for(uint8_t i = 0; i < EE_CC1100_CFG_SIZE; i++) {
-    cc1100_sendbyte(erb(cfg++));
+
+  for(uint8_t i = 0; i < sizeof(CC1100_CFG); i++) {
+	  cc1100_sendbyte(__LPM(CC1100_CFG+i));
   }
+
   CC1100_DEASSERT;
 
-  uint8_t *pa = EE_CC1100_PA;
   CC1100_ASSERT;                             // setup PA table
   cc1100_sendbyte( CC1100_PATABLE | CC1100_WRITE_BURST );
-  for (uint8_t i = 0;i<8;i++) {
-    cc1100_sendbyte(erb(pa++));
+
+  uint8_t idx = 8;
+
+  const uint8_t *f = CC1100_PA+idx*8;
+  for (uint8_t i = 0; i < 8; i++) {
+	  cc1100_sendbyte(__LPM(f+i));
   }
+
   CC1100_DEASSERT;
 
   ccStrobe( CC1100_SCAL );
   my_delay_ms(1);
 }
 
-//--------------------------------------------------------------------
 
-void
-cc_set_pa(uint8_t idx)
-{
-  uint8_t *t = EE_CC1100_PA;
-
-  if(idx > 9)
-    idx = 8;
-
-#ifdef FULL_CC1100_PA
-  const uint8_t *f = CC1100_PA+idx*8;
-  for (uint8_t i = 0; i < 8; i++)
-    ewb(t++, __LPM(f+i));
-
-  // Correct the FREND0
-  ewb(EE_CC1100_CFG+0x22, (idx > 4 && idx < 10) ? 0x11 : 0x17);
-
-#else
-  if(idx > 4)
-    idx -= 5;
-
-  for (uint8_t i = 0; i < 8; i++)
-    ewb(t++, i == 1 ? __LPM(CC1100_PA+idx) : 0);
-
-#endif
-}
-
-
-//--------------------------------------------------------------------
-void
-cc_factory_reset(void)
-{
-  uint8_t *t = EE_CC1100_CFG;
-  for(uint8_t i = 0; i < sizeof(CC1100_CFG); i++)
-    ewb(t++, __LPM(CC1100_CFG+i));
-  cc_set_pa(8);
-}
-
-//--------------------------------------------------------------------
-void
-ccsetpa(char *in)
-{
-  uint8_t hb = 2;
-  fromhex(in+1, &hb, 1);
-  cc_set_pa(hb);
-  ccInitChip(EE_CC1100_CFG);
-}
 
 //--------------------------------------------------------------------
 void
@@ -297,6 +245,6 @@ set_ccoff(void)
 void
 set_ccon(void)
 {
-  ccInitChip(EE_CC1100_CFG);
+  ccInitChip();
   cc_on = 1;
 }
