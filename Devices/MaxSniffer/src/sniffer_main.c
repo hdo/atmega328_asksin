@@ -1,7 +1,9 @@
-/* Copyright Rudolf Koenig, 2008.
-   Released under the GPL Licence, Version 2
-   Inpired by the MyUSB USBtoSerial demo, Copyright (C) Dean Camera, 2008.
-*/
+/* Copyright Huy Do, 2014.
+ * huydo1@gmail.com
+ * License: Released under the GPL Licence, Version 2
+ *
+ * Work is based on culfw: http://culfw.de/culfw.html
+ */
 
 #include <avr/power.h>
 #include <avr/interrupt.h>

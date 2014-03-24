@@ -6,7 +6,7 @@
 #include "delay.h"
 #include "fncollection.h"
 #include "cc1100.h"
-#include "../version.h"
+#include "version.h"
 #include "clock.h"
 
 void
