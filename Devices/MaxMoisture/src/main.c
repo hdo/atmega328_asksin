@@ -23,7 +23,6 @@
 #include "fncollection.h"
 #include "led.h"
 #include "ringbuffer.h"
-#include "rf_receive.h"
 #include "rf_send.h"
 #include "ttydata.h"
 #include "rf_asksin.h"
@@ -40,9 +39,6 @@ const PROGMEM t_fntab fntab[] = {
   { 'A', asksin_func },
   { 'Z', moritz_func },
   { 'V', version },
-  { 'X', set_txreport },
-
-  { 't', gettime },
 
   { 0, 0 },
 };
@@ -130,7 +126,6 @@ main(void)
 
   uart_init( UART_BAUD_SELECT_DOUBLE_SPEED(UART_BAUD_RATE,F_CPU) );
 
-  tx_init();
   input_handle_func = analyze_ttydata;
 
   display_channel = DISPLAY_USB;
@@ -163,7 +158,6 @@ main(void)
 	led_process(ticks);
 
     uart_task();
-    RfAnalyze_Task();
     Minute_Task();
     rf_asksin_task();
     rf_moritz_task();

@@ -5,7 +5,6 @@
 #include <avr/io.h>
 #include "cc1100.h"
 #include "delay.h"
-#include "rf_receive.h"
 #include "display.h"
 #include "clock.h"
 #include "rf_send.h" //credit_10ms
@@ -196,19 +195,11 @@ rf_moritz_task(void)
 
     moritz_handleAutoAck(enc);
 
-    if (tx_report & REP_BINTIME) {
-
-      DC('z');
-      for (uint8_t i=0; i<=enc[0]; i++)
-      DC( enc[i] );
-    } else {
-      DC('Z');
-      for (uint8_t i=0; i<=enc[0]; i++)
-        DH2( enc[i] );
-      if (tx_report & REP_RSSI)
-        DH2(rssi);
-      DNL();
+    DC('Z');
+    for (uint8_t i=0; i<=enc[0]; i++) {
+    	DH2( enc[i] );
     }
+    DNL();
 
     return;
   }
@@ -332,9 +323,6 @@ moritz_sendraw(uint8_t *dec, int longPreamble)
     rf_moritz_init();
   }
 
-  if(!moritz_on) {
-    set_txrestore();
-  }
   lastSendingTicks = ticks;
 }
 
@@ -359,10 +347,9 @@ moritz_sendAck(uint8_t* enc)
 
   //Inform FHEM that we send an autoack
   DC('Z');
-  for (uint8_t i=0; i < ackPacket[0]+1; i++)
-    DH2( ackPacket[i] );
-  if (tx_report & REP_RSSI)
-    DH2( 0 ); //fake some rssi
+  for (uint8_t i=0; i < ackPacket[0]+1; i++) {
+	    DH2( ackPacket[i] );
+  }
   DNL();
 }
 

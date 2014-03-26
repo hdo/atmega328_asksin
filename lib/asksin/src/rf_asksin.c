@@ -3,7 +3,7 @@
 #include <avr/pgmspace.h>
 #include "cc1100.h"
 #include "delay.h"
-#include "rf_receive.h"
+//#include "rf_receive.h"
 #include "display.h"
 
 #include "rf_asksin.h"
@@ -138,24 +138,13 @@ rf_asksin_task(void)
          dec[l] = (enc[l-1] + 0xdc) ^ enc[l];
     
     dec[l] = enc[l] ^ dec[2];
+
+    DC('A');
     
-    if (tx_report & REP_BINTIME) {
-      
-      DC('a');
-      for (uint8_t i=0; i<=dec[0]; i++)
-      DC( dec[i] );
-         
-    } else {
-      DC('A');
-      
-      for (uint8_t i=0; i<=dec[0]; i++)
+    for (uint8_t i=0; i<=dec[0]; i++) {
         DH2( dec[i] );
-      
-      if (tx_report & REP_RSSI)
-        DH2(rssi);
-      
-      DNL();
     }
+    DNL();
   }
 
   switch(cc1100_readReg( CC1100_MARCSTATE )) {
@@ -235,8 +224,6 @@ asksin_send(char *in)
     do {
       ccStrobe(CC1100_SRX);
     } while (cc1100_readReg(CC1100_MARCSTATE) != MARCSTATE_RX);
-  } else {
-    set_txrestore();
   }
 }
 

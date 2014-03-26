@@ -25,17 +25,6 @@ ISR(TIMER0_COMPA_vect, ISR_BLOCK)
 }
 
 void
-gettime(char *unused)
-{
-  uint8_t *p = (uint8_t *)&ticks;
-  DH2(p[3]);
-  DH2(p[2]);
-  DH2(p[1]);
-  DH2(p[0]);
-  DNL();
-}
-
-void
 Minute_Task(void)
 {
   static uint8_t last_tick;

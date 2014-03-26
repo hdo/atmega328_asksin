@@ -16,7 +16,6 @@ src/led.c \
 src/math_utils.c \
 src/rf_asksin.c \
 src/rf_moritz.c \
-src/rf_receive.c \
 src/rf_send.c \
 src/ringbuffer.c \
 src/serial.c \
