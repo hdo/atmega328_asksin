@@ -148,7 +148,7 @@ main(void)
   sei();
 
   /* start moritz function */
-  moritz_func("Zr\n");
+  //moritz_func("Zr\n");
 
   uint32_t last_adc_ticks = 0;
 
@@ -159,17 +159,24 @@ main(void)
 
     uart_task();
     Minute_Task();
-    rf_asksin_task();
+    //rf_asksin_task();
     rf_moritz_task();
 
     // each tick = 8ms
     // perform adc every 2 seconds
-    if (math_calc_diff(ticks, last_adc_ticks) > 250) {
+    if (math_calc_diff(ticks, last_adc_ticks) > 3750) {
     	last_adc_ticks = ticks;
     	DS("perform adc ...");
-    	uint16_t adcval = ADC_Read_Avg(2, 4);  // Kanal 2, Mittelwert aus 4 Messungen // mach was mit adcval
+    	uint16_t adcval = ADC_Read_Avg(0, 4);  // Kanal 2, Mittelwert aus 4 Messungen // mach was mit adcval
+    	uint8_t svalue[30] = "Zs0C2A0255081043471112000000\n\0";
+    	//uint8_t *p = &svalue[0];
+    	tohex((adcval >> 8) & 0xFF, &svalue[24]);
+    	tohex(adcval & 0xFF, &svalue[26]);
+    	DS(svalue);
+    	DS("\r\n");
     	DU(adcval, 5);
     	DS("\r\n");
+    	moritz_func(svalue);
     }
   }
 
