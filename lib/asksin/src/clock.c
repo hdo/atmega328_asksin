@@ -37,8 +37,9 @@ Minute_Task(void)
     return;
 
   // one second, 1% duty cycle, 10ms resolution => this is simple ;-)
-  if (credit_10ms < MAX_CREDIT)
+  if (credit_10ms < MAX_CREDIT) {
     credit_10ms += 1;
+  }
 
   static uint8_t clock_sec;
   clock_sec++;

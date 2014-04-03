@@ -12,4 +12,5 @@
 
 #include "rf_send.h"
 
-uint16_t credit_10ms;
+uint16_t credit_10ms = MAX_CREDIT;
+//uint16_t credit_10ms = MAX_CREDIT / 2;
