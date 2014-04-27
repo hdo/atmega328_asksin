@@ -16,6 +16,8 @@ void moritz_sendAck(uint8_t* enc);
 void moritz_handleAutoAck(uint8_t* enc);
 
 uint8_t moritz_on = 0;
+uint8_t moritz_data_available = 0;
+MAX_RF_DATA max_data;
 
 /*
  * CC1100_PKTCTRL0.LENGTH_CONFIG = 1 //Variable packet length mode. Packet length configured by the first byte after sync word
@@ -143,6 +145,7 @@ moritz_handleAutoAck(uint8_t* enc)
            enc[3] == 0x30 /* type ShutterContactState */
         || enc[3] == 0x40 /* type SetTemperature */
         || enc[3] == 0x50 /* type PushButtonState */
+        || enc[3] == 0x75 /* type RGBRingValues */
         )
       && enc[7] == autoAckAddr[0] /* dest */
       && enc[8] == autoAckAddr[1]
@@ -195,11 +198,15 @@ rf_moritz_task(void)
 
     moritz_handleAutoAck(enc);
 
-    DC('Z');
+    //DC('Z');
+    uint8_t *rf_data = (uint8_t*) &max_data;
     for (uint8_t i=0; i<=enc[0]; i++) {
-    	DH2( enc[i] );
+    	//DH2( enc[i] );
+    	*rf_data++ = enc[i];
     }
-    DNL();
+    *rf_data = 0x00; // null terminating
+    //DNL();
+    moritz_data_available = 1;
 
     return;
   }
@@ -378,5 +385,15 @@ moritz_func(char *in)
     moritz_on = 0;
 
   }
+}
+
+uint8_t rf_moritz_data_available(void) {
+	if (moritz_data_available) {
+		moritz_data_available = 0;
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
 

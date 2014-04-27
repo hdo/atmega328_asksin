@@ -31,6 +31,7 @@
 
 
 volatile extern uint32_t ticks;  // 1/125 sec resolution // see clock.h
+extern MAX_RF_DATA max_data;
 
 const PROGMEM t_fntab fntab[] = {
 
@@ -104,6 +105,23 @@ main(void)
     Minute_Task();
     rf_asksin_task();
     rf_moritz_task();
+    if (rf_moritz_data_available()) {
+        DC('Z');
+        uint8_t *rf_data = (uint8_t*) &max_data;
+        for (uint8_t i=0; i<=*rf_data; i++) {
+        	DH2( *rf_data++ );
+        }
+        DNL();
+        DS("length: ");
+        DU(max_data.length, 2);
+        DNL();
+        DS("msg count: ");
+        DU(max_data.message_count, 2);
+        DNL();
+        DS("msg type: ");
+        DU(max_data.message_type, 2);
+        DNL();
+    }
   }
 
 }
